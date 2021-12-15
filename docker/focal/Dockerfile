@@ -105,5 +105,18 @@ RUN qbs-setup-toolchains /usr/bin/g++ gcc && \
 # Switch back to root user for the entrypoint script.
 USER root
 
+# Install libraries for cmake module provider testing
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install -qq -y --no-install-recommends \
+        libboost-log-dev \
+        libpoco-dev
+
+# Install vcpkg
+ENV VCPKG_HOME="/opt/vcpkg"
+RUN cd "/opt" && git clone https://github.com/Microsoft/vcpkg.git
+RUN cd ${VCPKG_HOME} && ./bootstrap-vcpkg.sh -disableMetrics
+RUN cd ${VCPKG_HOME} && ./vcpkg install boost poco
+RUN echo "export VCPKG_HOME=${VCPKG_HOME}" > /etc/profile.d/qt.sh
+
 # Work-around for QTBUG-79020
 RUN echo "export QT_NO_GLIB=1" >> /etc/profile.d/qt.sh

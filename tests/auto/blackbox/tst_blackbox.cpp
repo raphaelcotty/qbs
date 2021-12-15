@@ -4071,6 +4071,26 @@ void TestBlackbox::exportsQbs()
     QVERIFY2(m_qbsStdout.contains("creating MyTool.qbs"), m_qbsStdout.constData());
 }
 
+void TestBlackbox::exportsCMake()
+{
+    QDir::setCurrent(testDataDir + "/exports-cmake");
+    const QStringList exporterArgs{"-f", "exports-cmake.qbs", "qbs.installRoot:" + QDir::currentPath()};
+    QbsRunParameters exporterRunParams("build", exporterArgs);
+    exporterRunParams.buildDirectory = QDir::currentPath() + "/exporter";
+    QCOMPARE(runQbs(exporterRunParams), 0);
+
+    const QString installPrefix = (HostOsInfo::isAnyUnixHost()) ? QStringLiteral("/usr/local") :
+                                                                  QString();
+    const QString installDir = QDir::cleanPath(QDir::currentPath() + installPrefix +
+                                               QStringLiteral("/lib/cmake"));
+                QDir::currentPath();
+    const QStringList importerArgs{"-f", "consumer.qbs",
+                                   "moduleProviders.cmake.cmakePrefixPath:" + installDir};
+    QbsRunParameters importerRunParams("build", importerArgs);
+    importerRunParams.buildDirectory = QDir::currentPath() + "/importer";
+    QCOMPARE(runQbs(importerRunParams), 0);
+}
+
 void TestBlackbox::externalLibs()
 {
     QDir::setCurrent(testDataDir + "/external-libs");

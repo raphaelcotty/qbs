@@ -124,6 +124,7 @@ private slots:
     void exportToOutsideSearchPath();
     void exportsPkgconfig();
     void exportsQbs();
+    void exportsCMake();
     void externalLibs();
     void fileDependencies();
     void fileTagsFilterMerging();
