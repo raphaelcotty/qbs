@@ -21,7 +21,7 @@ services:
   focal:
     << : *linux
     hostname: focal
-    image: ${DOCKER_USER:-qbsbuild}/qbsdev:focal-5.15.2_1.20.1-1
+    image: ${DOCKER_USER:-qbsbuild}/qbsdev:focal-5.15.2_1.20.1-2
     build:
       dockerfile: docker/focal/Dockerfile
       context: .
@@ -32,7 +32,7 @@ services:
   focal-qt6:
     << : *linux
     hostname: focal-qt6
-    image: ${DOCKER_USER:-qbsbuild}/qbsdev:focal-qt6-6.2.0_1.20.1-1
+    image: ${DOCKER_USER:-qbsbuild}/qbsdev:focal-qt6-6.2.0_1.20.1-2
     build:
       dockerfile: docker/focal/Dockerfile
       context: .
