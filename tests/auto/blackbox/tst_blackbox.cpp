@@ -4083,7 +4083,6 @@ void TestBlackbox::exportsCMake()
                                                                   QString();
     const QString installDir = QDir::cleanPath(QDir::currentPath() + installPrefix +
                                                QStringLiteral("/lib/cmake"));
-                QDir::currentPath();
     const QStringList importerArgs{"-f", "consumer.qbs",
                                    "moduleProviders.cmake.cmakePrefixPath:" + installDir};
     QbsRunParameters importerRunParams("build", importerArgs);
