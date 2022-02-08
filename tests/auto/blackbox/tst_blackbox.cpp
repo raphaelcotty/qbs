@@ -4080,7 +4080,10 @@ void TestBlackbox::exportsCMake()
     exporterRunParams.buildDirectory = QDir::currentPath() + "/exporter";
     QCOMPARE(runQbs(exporterRunParams), 0);
 
-    const QString installDir = QDir::cleanPath(QDir::currentPath() + "/usr/local/lib/cmake");
+    const QString installPrefix = (HostOsInfo::isAnyUnixHost()) ? QStringLiteral("/usr/local") :
+                                                                  QString();
+    const QString installDir = QDir::cleanPath(QDir::currentPath() + installPrefix +
+                                               QStringLiteral("/lib/cmake"));
     const QStringList importerArgs{"-f", "consumer.qbs",
                                    "moduleProviders.cmake.cmakePrefixPath:" + installDir};
     QbsRunParameters importerRunParams("build", importerArgs);

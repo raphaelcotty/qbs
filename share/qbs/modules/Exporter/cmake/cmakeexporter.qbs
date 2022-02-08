@@ -39,7 +39,10 @@
 
 import qbs.File
 import qbs.FileInfo
+<<<<<<< HEAD
 import qbs.Host
+=======
+>>>>>>> change-386827
 import qbs.ModUtils
 import qbs.TextFile
 
@@ -132,7 +135,6 @@ Module {
                 if (Host.os().contains("windows"))
                     cmakeConfigFile.writeLine("  IMPORTED_IMPLIB_" + configuration + " \"${" +
                                               targetLibDir + "}/" + importArtifacts[0].fileName + "\"");
-
                 cmakeConfigFile.writeLine(")");
 
                 cmakeConfigFile.close();

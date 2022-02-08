@@ -344,7 +344,8 @@ function doSetup(cmakeFilePath, packages, outputBaseDir, location, qbs, cmakeToo
                 if (value.endsWith(".a"))
                     writeModuleProperty(modSub, "staticLibraries", value);
                 else
-                    writeModuleProperty(modSub, "dynamicLibraries", value);
+                    writeModuleProperty(modSub, "dynamicLibraries",
+                                        FileInfo.completeBaseName(value));
             } else if (key.endsWith(includePathsKey)) {
                 moduleSubModuleName = key.slice(0, key.length - includePathsKey.length);
                 modSub = getModuleSubModule(moduleSubModuleName, modulesMap);

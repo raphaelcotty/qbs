@@ -6,6 +6,8 @@ Project {
         name: "Foo"
         files: ["Foo.cpp"]
         version: "1.2.3"
+        cpp.defines: ["FOO_LIB"]
+        installImportLib: true
         Group {
             name: "API headers"
             files: ["Foo.h"]
