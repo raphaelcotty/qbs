@@ -31,6 +31,7 @@
 var Environment = require("qbs.Environment");
 var File = require("qbs.File");
 var FileInfo = require("qbs.FileInfo");
+var Host = require("qbs.Host");
 var ModUtils = require("qbs.ModUtils");
 var Process = require("qbs.Process");
 var TemporaryDir = require("qbs.TemporaryDir");
@@ -235,6 +236,8 @@ function doSetup(cmakeFilePath, packages, outputBaseDir, location, qbs, cmakeToo
                              "IMPORTED_CONFIGURATIONS");
             addCMakeSimpleProperty(cmakeListsFile, packageName, "location",
                              "IMPORTED_LOCATION_${" + packageName + "_configurations}");
+            addCMakeSimpleProperty(cmakeListsFile, packageName, "implib",
+                             "IMPORTED_IMPLIB_${" + packageName + "_configurations}");
         }
     }
     cmakeListsFile.close();
@@ -298,6 +301,7 @@ function doSetup(cmakeFilePath, packages, outputBaseDir, location, qbs, cmakeToo
         var subModuleName;
         var versionKey = "_VERSION";
         var libraryKey = "_location";
+        var impLibKey = "_implib";
         var includePathsKey = "_includePaths";
         var systemIncludePathsKey = "_systemIncludePaths";
         var definesKey = "_compileDefines";
@@ -338,7 +342,7 @@ function doSetup(cmakeFilePath, packages, outputBaseDir, location, qbs, cmakeToo
                             modulesMap[modName].subModules[subModName][key].concat(value);
             }
 
-            if (key.endsWith(libraryKey)) {
+            if (key.endsWith(libraryKey) && Host.os().contains("linux")) {
                 moduleSubModuleName = key.slice(0, key.length - libraryKey.length);
                 modSub = getModuleSubModule(moduleSubModuleName, modulesMap);
                 if (value.endsWith(".a"))
@@ -346,6 +350,10 @@ function doSetup(cmakeFilePath, packages, outputBaseDir, location, qbs, cmakeToo
                 else
                     writeModuleProperty(modSub, "dynamicLibraries",
                                         FileInfo.completeBaseName(value));
+            } else if (key.endsWith(impLibKey) && Host.os().contains("windows")) {
+                moduleSubModuleName = key.slice(0, key.length - impLibKey.length);
+                modSub = getModuleSubModule(moduleSubModuleName, modulesMap);
+                writeModuleProperty(modSub, "dynamicLibraries", value);
             } else if (key.endsWith(includePathsKey)) {
                 moduleSubModuleName = key.slice(0, key.length - includePathsKey.length);
                 modSub = getModuleSubModule(moduleSubModuleName, modulesMap);

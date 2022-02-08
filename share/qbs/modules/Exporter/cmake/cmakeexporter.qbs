@@ -39,10 +39,7 @@
 
 import qbs.File
 import qbs.FileInfo
-<<<<<<< HEAD
 import qbs.Host
-=======
->>>>>>> change-386827
 import qbs.ModUtils
 import qbs.TextFile
 
